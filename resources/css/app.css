@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -8,4 +9,34 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer components {
+
+ .link-hover-logo{
+        @apply hover:text-blue-500 text-4xl;
+    }
+    .link-hover{
+        @apply hover:text-blue-400 text-lg;
+    }
+    .nav{
+        @apply max-w-7xl mx-6 px-14 py-4 flex items-center justify-between;
+    }
+    .logo{
+        @apply text-lg font-bold;
+    }
+    .nav-list{
+        @apply flex gap-6 text-sm font-medium;
+    }
+    .nav-container{
+        @apply bg-gray-900 text-blue-200;
+    }
+    .input-search{
+       @apply border border-blue-300 rounded-lg pl-10 pr-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-300
+    }
+    .search-container{
+        @apply relative w-64;
+    }
+    
+    
 }
