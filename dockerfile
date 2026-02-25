@@ -1,23 +1,28 @@
-FROM php:8.3-cli
+FROM php:8.2-apache
 
-# Instala dependências do sistema e extensões PHP
+# Instala extensões necessárias
 RUN apt-get update && apt-get install -y \
-    git unzip libpq-dev libzip-dev \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    libpq-dev zip unzip git \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
-# Composer
+# Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
+# Configura Apache
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN a2enmod rewrite
+
+# Copia o projeto
+WORKDIR /var/www/html
 COPY . .
 
-# Instala as dependências sem rodar scripts do Laravel que precisam de ENV
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Instala dependências
+RUN composer install --no-dev --optimize-autoloader
 
-# Ajusta permissões (Crítico para o erro 500)
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
-    && chmod -R 775 /app/storage /app/bootstrap/cache
+# Permissões
+RUN chown -R www-data:www-data storage bootstrap/cache
 
-# O Render injeta a porta automaticamente na variável $PORT
-# Usamos o 'sh -c' para garantir que os comandos de cache rodem ao iniciar
-CMD sh -c "php artisan config:cache && php artisan route:cache && php artisan serve --host=0.0.0.0 --port=$PORT"
+EXPOSE 80
+
+CMD ["apache2-foreground"]
