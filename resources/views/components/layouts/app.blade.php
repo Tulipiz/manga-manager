@@ -6,16 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
 </head>
 
-<body class="min-h-screen">
+<body class="min-h-screen" style="background: #111217 ">
     <header>
         <livewire:navigation />
     </header>
     <main class="p-6">
         {{ $slot }}
     </main>
+    <x-ui.toast />
     @livewireScripts
 </body>
 

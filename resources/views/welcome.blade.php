@@ -1,9 +1,13 @@
 <x-layouts.app>
-    <h1 class="text-2xl font-bold">
-        Bem-vindo ao Laravel 🚀
-    </h1>
-
-    <p class="mt-4 mt-2">
-        Conteúdo da página welcome.
-    </p>
+    <div class="flex justify-center">
+        <div class="box-border w-[800px] h-[64rem] border p-4">
+            <h1 class="mb-4 text-center text-xl font-semibold">
+                Últimas Atualizações
+            </h1>
+            <hr class="mb-4">
+            <div>
+                Container onde vai ser exibida a listagem dos mangás atualizados recentemente
+            </div>
+        </div>
+    </div>
 </x-layouts.app>
