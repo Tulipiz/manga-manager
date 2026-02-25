@@ -7,15 +7,17 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
-
 COPY . .
 
+# Instala dependências
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:clear
-RUN php artisan route:clear
-RUN php artisan view:clear
+# Ajusta permissões vitais para o Laravel
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
+    && chmod -R 775 /app/storage /app/bootstrap/cache
 
-EXPOSE 10000
+# Limpa caches que podem ter vindo da sua máquina local
+RUN php artisan config:clear && php artisan cache:clear
 
-CMD php -S 0.0.0.0:10000 -t public
+# O Render define a porta na variável $PORT
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
