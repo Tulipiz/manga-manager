@@ -34,7 +34,6 @@ class CadastrarProjeto extends Component
             );
         } else {
             $this->$propriedade[] = $id;
-            dd('para');
         }
     }
 
